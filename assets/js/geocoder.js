@@ -37,10 +37,10 @@
 
     onAdd: function (map) {
       var className = 'leaflet-control-geocoder',
-          container = L.DomUtil.create('div', className + ' leaflet-bar'),
-          icon      = L.DomUtil.create('a', 'leaflet-control-geocoder-icon', container),
-          form      = this._form = L.DomUtil.create('form', className + '-form', container),
-          input;
+        container = L.DomUtil.create('div', className + ' leaflet-bar'),
+        icon = L.DomUtil.create('a', 'leaflet-control-geocoder-icon', container),
+        form = this._form = L.DomUtil.create('form', className + '-form', container),
+        input;
 
       icon.innerHTML = '&nbsp;';
       icon.href = 'javascript:void(0);';
@@ -185,14 +185,14 @@
     },
 
     _createAlt: function (result, index) {
-      var li           = L.DomUtil.create('li', ''),
-          a            = L.DomUtil.create('a', '', li),
-          icon         = this.options.showResultIcons && result.icon ? L.DomUtil.create('img', '', a) : null,
-          text         = result.html ? undefined : document.createTextNode(result.name),
-          clickHandler = function clickHandler(e) {
-            L.DomEvent.preventDefault(e);
-            this._geocodeResultSelected(result);
-          };
+      var li = L.DomUtil.create('li', ''),
+        a = L.DomUtil.create('a', '', li),
+        icon = this.options.showResultIcons && result.icon ? L.DomUtil.create('img', '', a) : null,
+        text = result.html ? undefined : document.createTextNode(result.name),
+        clickHandler = function clickHandler(e) {
+          L.DomEvent.preventDefault(e);
+          this._geocodeResultSelected(result);
+        };
 
       if (icon) {
         icon.src = result.icon;
@@ -212,20 +212,20 @@
     },
 
     _keydown: function (e) {
-      var _this  = this,
-          select = function select(dir) {
-            if (_this._selection) {
-              L.DomUtil.removeClass(_this._selection, 'leaflet-control-geocoder-selected');
-              _this._selection = _this._selection[dir > 0 ? 'nextSibling' : 'previousSibling'];
-            }
-            if (!_this._selection) {
-              _this._selection = _this._alts[dir > 0 ? 'firstChild' : 'lastChild'];
-            }
+      var _this = this,
+        select = function select(dir) {
+          if (_this._selection) {
+            L.DomUtil.removeClass(_this._selection, 'leaflet-control-geocoder-selected');
+            _this._selection = _this._selection[dir > 0 ? 'nextSibling' : 'previousSibling'];
+          }
+          if (!_this._selection) {
+            _this._selection = _this._alts[dir > 0 ? 'firstChild' : 'lastChild'];
+          }
 
-            if (_this._selection) {
-              L.DomUtil.addClass(_this._selection, 'leaflet-control-geocoder-selected');
-            }
-          };
+          if (_this._selection) {
+            L.DomUtil.addClass(_this._selection, 'leaflet-control-geocoder-selected');
+          }
+        };
 
       switch (e.keyCode) {
         // Escape
@@ -344,8 +344,8 @@
       geocodingQueryParams: {},
       reverseQueryParams: {},
       htmlTemplate: function (r) {
-        var a     = r.address,
-            parts = [];
+        var a = r.address,
+          parts = [];
         if (a.road || a.building) {
           parts.push('{building} {road} {house_number}');
         }
@@ -369,12 +369,12 @@
     },
 
     geocode: function (query, cb, context) {
-      L.Control.Geocoder.jsonp(this.options.serviceUrl + 'search/', L.extend({
-          q: query,
-          limit: 5,
-          format: 'json',
-          addressdetails: 1
-        }, this.options.geocodingQueryParams),
+      L.Control.Geocoder.jsonp(this.options.serviceUrl + 'search', L.extend({
+        q: query,
+        limit: 5,
+        format: 'json',
+        addressdetails: 1
+      }, this.options.geocodingQueryParams),
         function (data) {
           var results = [];
           for (var i = data.length - 1; i >= 0; i--) {
@@ -396,7 +396,7 @@
     },
 
     reverse: function (location, scale, cb, context) {
-      L.Control.Geocoder.jsonp(this.options.serviceUrl + 'reverse/', L.extend({
+      L.Control.Geocoder.jsonp(this.options.serviceUrl + 'reverse', L.extend({
         lat: location.lat,
         lon: location.lng,
         zoom: Math.round(Math.log(scale / 256) / Math.log(2)),
@@ -404,7 +404,7 @@
         format: 'json'
       }, this.options.reverseQueryParams), function (data) {
         var result = [],
-            loc;
+          loc;
 
         if (data && data.lat && data.lon) {
           loc = L.latLng(data.lat, data.lon);
@@ -442,7 +442,7 @@
         if (data.resourceSets.length > 0) {
           for (var i = data.resourceSets[0].resources.length - 1; i >= 0; i--) {
             var resource = data.resourceSets[0].resources[i],
-                bbox     = resource.bbox;
+              bbox = resource.bbox;
             results[i] = {
               name: resource.name,
               bbox: L.latLngBounds([bbox[0], bbox[1]], [bbox[2], bbox[3]]),
@@ -461,7 +461,7 @@
         var results = [];
         for (var i = data.resourceSets[0].resources.length - 1; i >= 0; i--) {
           var resource = data.resourceSets[0].resources[i],
-              bbox     = resource.bbox;
+            bbox = resource.bbox;
           results[i] = {
             name: resource.name,
             bbox: L.latLngBounds([bbox[0], bbox[1]], [bbox[2], bbox[3]]),
@@ -486,7 +486,7 @@
 
     jsonp: function (params, callback, context) {
       var callbackId = '_l_geocoder_' + (L.Control.Geocoder.callbackId++),
-          paramParts = [];
+        paramParts = [];
       params.prepend = callbackId + '(';
       params.append = ')';
       for (var p in params) {
@@ -519,7 +519,7 @@
         var results = [];
         for (var i = data.length - 1; i >= 0; i--) {
           var r = data[i],
-              c = L.latLng(r.y, r.x);
+            c = L.latLng(r.y, r.x);
           results[i] = {
             name: r.address,
             bbox: L.latLngBounds([c]),
@@ -550,7 +550,7 @@
 
     _formatName: function () {
       var r = [],
-          i;
+        i;
       for (i = 0; i < arguments.length; i++) {
         if (arguments[i]) {
           r.push(arguments[i]);
@@ -568,8 +568,8 @@
         outFormat: 'json'
       }, function (data) {
         var results = [],
-            loc,
-            latLng;
+          loc,
+          latLng;
         if (data.results && data.results[0].locations) {
           for (var i = data.results[0].locations.length - 1; i >= 0; i--) {
             loc = data.results[0].locations[i];
@@ -593,8 +593,8 @@
         outputFormat: 'json'
       }, function (data) {
         var results = [],
-            loc,
-            latLng;
+          loc,
+          latLng;
         if (data.results && data.results[0].locations) {
           for (var i = data.results[0].locations.length - 1; i >= 0; i--) {
             loc = data.results[0].locations[i];
@@ -630,9 +630,9 @@
         access_token: this._access_token,
       }, function (data) {
         var results = [],
-            loc,
-            latLng,
-            latLngBounds;
+          loc,
+          latLng,
+          latLngBounds;
         if (data.features && data.features.length) {
           for (var i = 0; i <= data.features.length - 1; i++) {
             loc = data.features[i];
@@ -664,9 +664,9 @@
         access_token: this._access_token,
       }, function (data) {
         var results = [],
-            loc,
-            latLng,
-            latLngBounds;
+          loc,
+          latLng,
+          latLngBounds;
         if (data.features && data.features.length) {
           for (var i = 0; i <= data.features.length - 1; i++) {
             loc = data.features[i];
@@ -773,9 +773,9 @@
 
       L.Control.Geocoder.getJSON(this.options.service_url, params, function (data) {
         var results = [],
-            loc,
-            latLng,
-            latLngBounds;
+          loc,
+          latLng,
+          latLngBounds;
         if (data.results && data.results.length) {
           for (var i = 0; i <= data.results.length - 1; i++) {
             loc = data.results[i];
@@ -802,9 +802,9 @@
       }
       L.Control.Geocoder.getJSON(this.options.service_url, params, function (data) {
         var results = [],
-            loc,
-            latLng,
-            latLngBounds;
+          loc,
+          latLng,
+          latLngBounds;
         if (data.results && data.results.length) {
           for (var i = 0; i <= data.results.length - 1; i++) {
             loc = data.results[i];
@@ -874,12 +874,12 @@
 
     _decodeFeatures: function (data) {
       var results = [],
-          i,
-          f,
-          c,
-          latLng,
-          extent,
-          bbox;
+        i,
+        f,
+        c,
+        latLng,
+        extent,
+        bbox;
 
       if (data && data.features) {
         for (i = 0; i < data.features.length; i++) {
@@ -908,7 +908,7 @@
 
     _deocodeFeatureName: function (f) {
       var j,
-          name;
+        name;
       for (j = 0; !name && j < this.options.nameProperties.length; j++) {
         name = f.properties[this.options.nameProperties[j]];
       }
